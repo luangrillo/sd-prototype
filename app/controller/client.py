@@ -1,6 +1,6 @@
 from flask import request
-from api.model.client import Client as Client_Model
-from api.controller.moddeling import Moddeling_res
+from app.model.client import Client as Client_Model
+from app.controller.moddeling import Moddeling_res
 
 
 class Client():

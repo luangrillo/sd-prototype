@@ -1,10 +1,10 @@
 from bson.objectid import ObjectId
-import api
+import app
 from datetime import datetime
 
 class Client():
     def __init__(self):
-        self.connection = api.database
+        self.connection = app.database
         self.collection = "client"
 
     def create(self, name, email):

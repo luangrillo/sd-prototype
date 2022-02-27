@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  image-predict:
+    image: codait/max-object-detector
+    ports:
+      - 5000:5000
+    networks:
+      - api
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+        - 27018:27017
+    networks:
+      - api
+      
+  rabbitmq:
+    image: rabbitmq
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbitmq
+    ports:
+        - 5672:5672
+        - 1883:1883
+        - 15672:15672
+    networks:
+      - api
+  flask:
+    image: flask
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    volumes:
+      - "./:/app"
+    sysctls:
+      net.core.somaxconn: 20024
+    networks:
+      - api
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    links:
+      - flask
+    ports:
+      - "80:8080"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - api
+      
+networks:
+  api:
+    driver: bridge

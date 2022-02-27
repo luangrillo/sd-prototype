@@ -1,9 +1,9 @@
 from os import environ
 from flask import Flask 
 
-from api.connection.mdb import db
+from app.connection.mdb import db
 
-from api.controller import swagger_bp, api_docs_bp, api_client_bp
+from app.controller import swagger_bp, api_docs_bp, api_client_bp, api_predict_bp
 
 
 class initializer():
@@ -13,11 +13,12 @@ class initializer():
     def loader(self, config_filename=None):
         global database
         
-        application = Flask(__name__)
+        application = Flask(__name__, static_folder='static')
 
         application.register_blueprint(swagger_bp)
         application.register_blueprint(api_docs_bp)
         application.register_blueprint(api_client_bp)
+        application.register_blueprint(api_predict_bp)
         application.config
               
         database = db()
